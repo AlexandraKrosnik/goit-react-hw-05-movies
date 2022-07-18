@@ -30,6 +30,8 @@ export const SearchMovie = () => {
 
         setTotalPage(movies.total_pages);
         setMoviesByQuery(movies.results);
+        !movies.results.length &&
+          setError('По даному запиту фільмів не знайдено');
         setIsLoading(false);
       } catch (error) {
         setError('По даному запиту фільмів не знайдено');
@@ -61,7 +63,7 @@ export const SearchMovie = () => {
       <Section>
         {!!moviesByQuery && <MoviesList list={moviesByQuery} />}
         {(!!error || !moviesByQuery) && <Empty description={error} />}
-        {!!moviesByQuery && (
+        {!!moviesByQuery && !!moviesByQuery.length && (
           <Pagination
             defaultCurrent={page}
             total={totalPage}

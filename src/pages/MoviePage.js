@@ -40,7 +40,6 @@ export const MoviePage = () => {
   };
 
   const goBack = () => {
-    console.log(state);
     state?.from
       ? navigate(state.from.pathname + state.from.search)
       : navigate('/');
