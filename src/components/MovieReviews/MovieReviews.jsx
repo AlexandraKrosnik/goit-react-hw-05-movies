@@ -1,29 +1,44 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import * as API from '../../service/Api';
+
+import { Container } from 'components/Container/Container';
+import { Reviews } from './Reviews/Reviews';
+import { LoadingOutlined } from '@ant-design/icons';
 export const MovieReviews = () => {
   const [reviewsMovie, setReviewsMovie] = useState();
+  const [loading, setLoading] = useState(false);
   const { movieId } = useParams();
 
   useEffect(() => {
     async function fetchCast() {
-      const reviews = await API.getReviewsOfTheMovie(movieId);
-      //   console.log(reviews);
-      setReviewsMovie(reviews.results);
+      try {
+        setLoading(true);
+        const reviews = await API.getReviewsOfTheMovie(movieId);
+
+        setReviewsMovie(reviews.results);
+        setLoading(false);
+      } catch {
+        setLoading(false);
+        setReviewsMovie(null);
+      }
     }
     fetchCast();
   }, [movieId]);
 
-  return reviewsMovie?.length !== 0 && !!reviewsMovie ? (
-    <ul>
-      {reviewsMovie.map(r => (
-        <li key={r.id}>
-          <h3>Author:{r.author}</h3>
-          <p>{r.content}</p>
-        </li>
-      ))}
-    </ul>
-  ) : (
-    <p>We don`t have any reviews for this movie</p>
+  return (
+    <Container>
+      {loading && (
+        <LoadingOutlined
+          style={{ fontSize: 36, display: 'flex', justifyContent: 'center' }}
+          spin
+        />
+      )}
+      {reviewsMovie?.length !== 0 && !!reviewsMovie ? (
+        <Reviews reviewsMovie={reviewsMovie} />
+      ) : (
+        !loading && <p>We don`t have any reviews for this movie</p>
+      )}
+    </Container>
   );
 };

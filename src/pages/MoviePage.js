@@ -1,31 +1,68 @@
+import { Movie } from 'components/Movie/Movie';
 import { useEffect, useState } from 'react';
-import { Link, useParams, Outlet } from 'react-router-dom';
+import { useParams, Outlet, useNavigate, useLocation } from 'react-router-dom';
+
+import { Section } from 'Section/Section';
 import * as API from '../service/Api';
+import { Tabs } from 'antd';
+import { Container } from 'components/Container/Container';
+import { Empty, Button } from 'antd';
+import { ArrowLeftOutlined } from '@ant-design/icons';
 
 export const MoviePage = () => {
   const [movie, setMovie] = useState();
+  const [error, setError] = useState();
   const { movieId } = useParams();
+  let { state } = useLocation();
+  const { TabPane } = Tabs;
+  let navigate = useNavigate();
   useEffect(() => {
     async function fetchMovie() {
-      const movie = await API.getMovieById(movieId);
-      //console.log(movie);
-      setMovie(movie);
+      try {
+        const movie = await API.getMovieById(movieId);
+        setMovie(movie);
+      } catch {
+        setError('Немає інформації про фільм!');
+      }
     }
     fetchMovie();
   }, [movieId]);
+
+  const onChange = key => {
+    if (key === '1') {
+      navigate(`/movies/${movieId}/cast`);
+    } else if (key === '2') {
+      navigate(`/movies/${movieId}/reviews`);
+    }
+  };
+
+  const goBack = () => {
+    state?.from
+      ? navigate(state.from.pathname + state.from.search)
+      : navigate('/');
+  };
   return (
-    <div>
+    <Section>
+      <Container>
+        <Button type="text " icon={<ArrowLeftOutlined />} onClick={goBack}>
+          Go back
+        </Button>
+      </Container>
+
       {!!movie && (
         <>
-          <h2>{movie.original_title}</h2>
-          <p>{movie.overview}</p>
-          <hr />
+          <Movie movie={movie} />
+          <Container>
+            <Tabs activeKey="3" onChange={onChange}>
+              <TabPane tab="Cast" key="1"></TabPane>
+              <TabPane tab="Reviews" key="2"></TabPane>
+            </Tabs>
+          </Container>
 
-          <Link to={`/movies/${movieId}/cast`}>Cast</Link>
-          <Link to={`/movies/${movieId}/reviews`}>Reviews</Link>
           <Outlet />
         </>
       )}
-    </div>
+      {!movie && <Empty description={error} />}
+    </Section>
   );
 };
