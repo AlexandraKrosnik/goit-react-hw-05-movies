@@ -1,21 +1,24 @@
 import { Movie } from 'components/Movie/Movie';
-import { useEffect, useState } from 'react';
+
+import { useEffect, useState, Suspense } from 'react';
 import { useParams, Outlet, useNavigate, useLocation } from 'react-router-dom';
 
 import { Section } from 'Section/Section';
 import * as API from '../service/Api';
-import { Tabs } from 'antd';
+
 import { Container } from 'components/Container/Container';
-import { Empty, Button } from 'antd';
-import { ArrowLeftOutlined } from '@ant-design/icons';
+import { Empty, Button, Tabs } from 'antd';
+import { ArrowLeftOutlined, LoadingOutlined } from '@ant-design/icons';
 
 export const MoviePage = () => {
   const [movie, setMovie] = useState();
   const [error, setError] = useState();
+
   const { movieId } = useParams();
   let { state } = useLocation();
   const { TabPane } = Tabs;
   let navigate = useNavigate();
+
   useEffect(() => {
     async function fetchMovie() {
       try {
@@ -30,13 +33,14 @@ export const MoviePage = () => {
 
   const onChange = key => {
     if (key === '1') {
-      navigate(`/movies/${movieId}/cast`);
+      navigate(`/movies/${movieId}/cast`, { state: { from: state.from } });
     } else if (key === '2') {
-      navigate(`/movies/${movieId}/reviews`);
+      navigate(`/movies/${movieId}/reviews`, { state: { from: state.from } });
     }
   };
 
   const goBack = () => {
+    console.log(state);
     state?.from
       ? navigate(state.from.pathname + state.from.search)
       : navigate('/');
@@ -58,8 +62,20 @@ export const MoviePage = () => {
               <TabPane tab="Reviews" key="2"></TabPane>
             </Tabs>
           </Container>
-
-          <Outlet />
+          <Suspense
+            fallback={
+              <LoadingOutlined
+                style={{
+                  fontSize: 36,
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}
+                spin
+              />
+            }
+          >
+            <Outlet />
+          </Suspense>
         </>
       )}
       {!movie && <Empty description={error} />}
