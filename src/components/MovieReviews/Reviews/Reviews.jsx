@@ -1,5 +1,6 @@
 import { Avatar, List } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
+import PropTypes from 'prop-types';
 export const Reviews = ({ reviewsMovie }) => {
   return (
     <List
@@ -27,4 +28,14 @@ export const Reviews = ({ reviewsMovie }) => {
       }}
     />
   );
+};
+
+Reviews.propTypes = {
+  reviewsMovie: PropTypes.arrayOf(
+    PropTypes.shape({
+      author: PropTypes.string.isRequired,
+      author_details: PropTypes.object,
+      content: PropTypes.string.isRequired,
+    }).isRequired
+  ),
 };

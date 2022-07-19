@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { Card } from 'antd';
+import PropTypes from 'prop-types';
 
 import { MovieCard, Img, Item } from './MovieItem.styled';
 const { Meta } = Card;
@@ -21,4 +22,11 @@ export const MovieItem = ({ id, title, img }) => {
       </Link>
     </Item>
   );
+};
+
+MovieItem.propTypes = {
+  id: PropTypes.number.isRequired,
+  title: PropTypes.string.isRequired,
+
+  img: PropTypes.string,
 };

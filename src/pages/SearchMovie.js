@@ -44,12 +44,13 @@ export const SearchMovie = () => {
   }, [movie, page]);
 
   const onSearch = value => {
-    setSearchParams({ movie: value.trim(), page: page });
+    setSearchParams({ movie: value, page: page });
   };
   const onChange = p => {
     setSearchParams({ movie: movie, page: p });
     window.scrollTo(0, 0);
   };
+
   return (
     <Container>
       <Section>
@@ -58,6 +59,7 @@ export const SearchMovie = () => {
           onSearch={onSearch}
           enterButton
           loading={isloading}
+          defaultValue={movie}
         />
       </Section>
       <Section>

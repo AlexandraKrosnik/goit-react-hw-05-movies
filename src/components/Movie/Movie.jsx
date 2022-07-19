@@ -1,10 +1,14 @@
 import { Container } from 'components/Container/Container';
 import { Content, MovieImg, Img, Aside, Title, About } from './Movie.styled';
 import { Descriptions } from 'antd';
+
+import PropTypes from 'prop-types';
+
 export const Movie = ({ movie }) => {
   const poster = !!movie.poster_path
     ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
     : 'https://www.remosoftware.com/info/wp-content/plugins/accelerated-mobile-pages/images/SD-default-image.png';
+
   return (
     <Container>
       <Title>{movie.original_title}</Title>
@@ -44,4 +48,8 @@ export const Movie = ({ movie }) => {
       </About>
     </Container>
   );
+};
+
+Movie.propTypes = {
+  movie: PropTypes.object.isRequired,
 };

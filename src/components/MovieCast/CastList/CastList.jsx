@@ -1,5 +1,6 @@
 import { Avatar, List } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
+import PropTypes from 'prop-types';
 export const CastList = ({ castMovie }) => {
   return (
     <List
@@ -27,4 +28,8 @@ export const CastList = ({ castMovie }) => {
       )}
     />
   );
+};
+
+CastList.propTypes = {
+  castMovie: PropTypes.array.isRequired,
 };
