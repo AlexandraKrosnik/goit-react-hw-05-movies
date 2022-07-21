@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 
 import * as API from '../service/Api';
 
-import { Section } from 'Section/Section';
+import { Section } from 'components/Section/Section';
 import { Container } from 'components/Container/Container';
 
 import { Empty, Pagination, Input } from 'antd';

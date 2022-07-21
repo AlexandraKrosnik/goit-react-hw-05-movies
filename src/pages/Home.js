@@ -3,7 +3,7 @@ import { MoviesList } from 'components/MoviesList/MoviesList';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-import { Section } from 'Section/Section';
+import { Section } from 'components/Section/Section';
 import * as API from '../service/Api';
 import { Empty, Pagination } from 'antd';
 export const Home = () => {

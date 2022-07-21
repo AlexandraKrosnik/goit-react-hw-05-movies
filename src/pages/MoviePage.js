@@ -3,7 +3,7 @@ import { Movie } from 'components/Movie/Movie';
 import { useEffect, useState, Suspense } from 'react';
 import { useParams, Outlet, useNavigate, useLocation } from 'react-router-dom';
 
-import { Section } from 'Section/Section';
+import { Section } from 'components/Section/Section';
 import * as API from '../service/Api';
 
 import { Container } from 'components/Container/Container';
